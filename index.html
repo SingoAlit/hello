@@ -7,21 +7,17 @@
 1. install grafana  akan pakai port : 3000 <br />
 2. install prometheus akan pakai port : 9090 <br />
 3. pastikan sudah bisa diakses semua web nyaa. <br />
-
 4. install disisi client yang akan dimonitoring : node.exporter <br />
 5. cara install tinggal download file node.exporter sesuaikan dengan server kalau linux cari .deb atau .npm atau aapalah. kalau windows server cari .exe <br />
 
 <h2>setelah install node.exporter di client atau server yang akan dimonitoring </h2>
+1. untuk menambahkan targets > kita masuk ke server prometheus lalu masuk folder /etc/prometheus > edit file prometheus.yml <br />
+- tambahkan ip target, interval ,dll <br />
+2. setelah itu reload di browser pada menu status > targets <br />
 
-untuk menambahkan targets > kita masuk ke server prometheus lalu masuk folder /etc/prometheus > edit file prometheus.yml <br />
-tambahkan ip target, interval ,dll <br />
-
-setelah itu reload di browser pada menu status > targets <br />
-
-
-untuk menampilkan grafik di grafana > <br />
-login dari web ke grafana dashboard > menu setting > data source > add data source > input ip prometheus <br />
-untuk membuat graph nya > menu dashboard > browse > + new folder atau new dashboard > masuk + panel  <br />
+<h2> untuk menampilkan grafik di grafana :  </h2>
+1. login dari web ke grafana dashboard > menu setting > data source > add data source > input ip prometheus <br />
+2. untuk membuat graph nya > menu dashboard > browse > + new folder atau new dashboard > masuk + panel  <br />
 
 <p> refresh </p>
 
