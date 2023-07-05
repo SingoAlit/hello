@@ -21,5 +21,71 @@
 
 <p> refresh </p>
 
+<h1>------------------------------------------------------------------------------------------------------------</h1>
+<h2> stop service zimbra masuk ke user zimbra : </h2>
+- stop service zimbra masuk ke user zimbra : <br />
+  # su zimbra <br />
+  $ zmproxyctl stop <br />
+  $ zmmailboxdctl stop <br />
+- kaluar dari user zimbra,<br />
+  $ exit<br /><br />
+- masuk ke direktori :<br />
+  # cd /etc/letsencrypt/renewal/letsencrypt<br />
+- melakukan renew SSL :<br />
+  # ./letsencrypt-auto certonly --standalone --renew-by-default -d mail.domain.anda<br />
+- merubah chain.pem <br />
+  # nano /etc/letsencrypt/live/mail.domain.anda/chain.pem<br />
+- menambahkan hal di bawah ke baris paling bawah.<br />
+<br />
+-----BEGIN CERTIFICATE-----<br />
+MIIDSjCCAjKgAwIBAgIQRK+wgNajJ7qJMDmGLvhAazANBgkqhkiG9w0BAQUFADA/<br />
+MSQwIgYDVQQKExtEaWdpdGFsIFNpZ25hdHVyZSBUcnVzdCBDby4xFzAVBgNVBAMT<br />
+DkRTVCBSb290IENBIFgzMB4XDTAwMDkzMDIxMTIxOVoXDTIxMDkzMDE0MDExNVow<br />
+PzEkMCIGA1UEChMbRGlnaXRhbCBTaWduYXR1cmUgVHJ1c3QgQ28uMRcwFQYDVQQD<br />
+Ew5EU1QgUm9vdCBDQSBYMzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB<br />
+AN+v6ZdQCINXtMxiZfaQguzH0yxrMMpb7NnDfcdAwRgUi+DoM3ZJKuM/IUmTrE4O<br />
+rz5Iy2Xu/NMhD2XSKtkyj4zl93ewEnu1lcCJo6m67XMuegwGMoOifooUMM0RoOEq<br />
+OLl5CjH9UL2AZd+3UWODyOKIYepLYYHsUmu5ouJLGiifSKOeDNoJjj4XLh7dIN9b<br />
+xiqKqy69cK3FCxolkHRyxXtqqzTWMIn/5WgTe1QLyNau7Fqckh49ZLOMxt+/yUFw<br />
+7BZy1SbsOFU5Q9D8/RhcQPGX69Wam40dutolucbY38EVAjqr2m7xPi71XAicPNaD<br />
+aeQQmxkqtilX4+U9m5/wAl0CAwEAAaNCMEAwDwYDVR0TAQH/BAUwAwEB/zAOBgNV<br />
+HQ8BAf8EBAMCAQYwHQYDVR0OBBYEFMSnsaR7LHH62+FLkHX/xBVghYkQMA0GCSqG<br />
+SIb3DQEBBQUAA4IBAQCjGiybFwBcqR7uKGY3Or+Dxz9LwwmglSBd49lZRNI+DT69<br />
+ikugdB/OEIKcdBodfpga3csTS7MgROSR6cz8faXbauX+5v3gTt23ADq1cEmv8uXr<br />
+AvHRAosZy5Q6XkjEGB5YGV8eAlrwDPGxrancWYaLbumR9YbK+rlmM6pZW87ipxZz<br />
+R8srzJmwN0jP41ZL9c8PDHIyh8bwRLtTcm1D9SZImlJnt1ir/md2cXjbDaJWFBM5<br />
+JDGFoqgCWjBH4d1QB7wCCZAA62RjYJsWvIjJEubSfZGL+T0yjWW06XyxV3bqxbYo<br />
+Ob8VZRzI9neWagqNdwvYkQsEjgfbKbYK7p2CNTUQ<br />
+-----END CERTIFICATE-----<br />
+<br />
+- Copy seluruh file /etc/letsencrypt/live/mail.domain.anda ke /opt/zimbra/ssl/letsencrypt :<br />
+  # cp /etc/letsencrypt/live/mail.domain.anda/* /opt/zimbra/ssl/letsencrypt/ <br />
+- rubah permision :<br />
+  # chown zimbra:zimbra /opt/zimbra/ssl/letsencrypt/*<br />
+- menampikan direktori letsencrypt<br />
+  # ls -la /opt/zimbra/ssl/letsencrypt/<br />
+- login sebagai user zimbra :<br />
+  # su zimbra<br />
+- masuk ke menu letsencrypt<br />
+  $ cd /opt/zimbra/ssl/letsencrypt<br />
+  $ /opt/zimbra/bin/zmcertmgr verifycrt comm privkey.pem cert.pem chain.pem<br />
+  ** Verifying cert.pem against privkey.pem<br />
+  Certificate (cert.pem) and private key (privkey.pem) match.<br />
+  Valid Certificate: cert.pem: OK<br />
+- keluar dari user zimbra :<br />
+  $ exit<br />
+- Backup terlebih dahulu folder ssl zimbra dengan perintah berikut:<br />
+  # cp -a /opt/zimbra/ssl/zimbra /opt/zimbra/ssl/zimbra.$(date "+%Y%m%d")<br />
+  # cp /opt/zimbra/ssl/letsencrypt/privkey.pem /opt/zimbra/ssl/zimbra/commercial/commercial.key<br />
+- masuk ke user zimbra dan masuk ke direktori letsencrypt :<br />
+  $ su zimbra<br />
+  $ cd /opt/zimbra/ssl/letsencrypt <br />
+- Deploy SSL :<br />
+  $ /opt/zimbra/bin/zmcertmgr deploycrt comm cert.pem chain.pem<br />
+- Restart service zimbra :<br />
+  $ zmcontrol restart<br />
+  
+  <p> refresh </p>
+
 </body>
 </html> 
